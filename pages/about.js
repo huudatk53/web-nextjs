@@ -3,15 +3,17 @@ import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import { useEffect, useState } from 'react'
 import axios  from 'axios'
-export default function About() {
+export default function About({allPosts}) {
   const [data,setData] = useState([]);
 
   useEffect(() => {
-    axios.get('https://onegatemb.com/api/user/getall').then(res=>{
-      setData(res.data);
-      console.log(res.data)
-    })
+    // axios.get('https://onegatemb.com/api/user/getall').then(res=>{
+    setData(allPosts);
+    //  console.log(res.data)
+    // })
     // eslint-disable-next-line react-hooks/exhaustive-deps
+    //console.log('allPosts',allPosts);
+
   }, []);
 
   return (
@@ -40,4 +42,12 @@ export default function About() {
       </footer>
     </div>
   )
+}
+
+export async function getStaticProps() {
+  const res = await axios.get('https://onegatemb.com/api/user/getall')
+  const allPosts = res.data
+  return {
+    props: { allPosts },
+  }
 }
